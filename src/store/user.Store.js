@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
-import { request } from "../utils";
+import { request, setUserInfo, getUserInfo, removeUserInfo } from "../utils";
 
 class UserStore {
-  userInfo = {};
+  userInfo = getUserInfo();
 
   constructor() {
     makeAutoObservable(this);
@@ -10,10 +10,18 @@ class UserStore {
 
   // fetch user info by calling the user profile API
   fetchUserInfo = async () => {
-    await request
-      .get("/user/profile")
-      .then((res) => (this.userInfo = res))
-      .catch((err) => (this.userInfo = {}));
+    const res = await request.get("/user/profile");
+    this.setUserInfo(res);
+  };
+
+  setUserInfo = (userInfo) => {
+    this.userInfo = userInfo;
+    setUserInfo(userInfo);
+  };
+
+  clearUserInfo = () => {
+    this.userInfo = null;
+    removeUserInfo();
   };
 }
 

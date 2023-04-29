@@ -7,13 +7,14 @@ import "./index.css";
 
 function Login() {
   const navigate = useNavigate();
-  const { loginStore } = useStore();
+  const { loginStore, userStore } = useStore();
 
   // login and redirect
   async function onFinish(values) {
     try {
       const { username, password } = values;
       await loginStore.login(username, password);
+      await userStore.fetchUserInfo();
       navigate("/");
       message.success("login");
     } catch (e) {

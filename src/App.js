@@ -1,21 +1,15 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Layout from "./pages/Layout";
-import { AuthRoute } from "./components/Authorize";
+import { withAuth } from "./components/Authorize";
+
+const LayoutWithAuth = withAuth(Layout, [], <Navigate to="/login" />);
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <AuthRoute>
-              <Layout />
-            </AuthRoute>
-          }
-        />
+        <Route path="/" element={<LayoutWithAuth />} />
         <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>

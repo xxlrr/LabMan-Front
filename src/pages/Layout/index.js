@@ -1,7 +1,6 @@
 import { Layout, Menu, Dropdown, message } from "antd";
-import { useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
-import { observer } from "mobx-react-lite";
+import { useNavigate, Navigate } from "react-router-dom";
+import React from "react";
 import {
   LaptopOutlined,
   NotificationOutlined,
@@ -15,14 +14,11 @@ const { Header, Content, Sider } = Layout;
 function PageLayout() {
   const { loginStore, userStore } = useStore();
 
-  useEffect(() => {
-    userStore.fetchUserInfo();
-  }, [userStore]);
-
   // logout function
   const navigate = useNavigate();
   const logout = async function () {
     loginStore.logout();
+    userStore.clearUserInfo();
     navigate("/login");
     message.success("logout");
   };
@@ -89,4 +85,4 @@ function PageLayout() {
   );
 }
 
-export default observer(PageLayout);
+export default PageLayout;
