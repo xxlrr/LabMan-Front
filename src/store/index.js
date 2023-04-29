@@ -1,6 +1,7 @@
 // unified export for all store modules (singleton pattern)
 import React from "react";
 import LoginStore from "./login.Store";
+import UserStore from "./user.Store";
 
 // import { configure } from "mobx"
 // configure({
@@ -10,6 +11,7 @@ import LoginStore from "./login.Store";
 class RootStore {
   constructor() {
     this.loginStore = new LoginStore();
+    this.userStore = new UserStore();
     // ...
   }
 }

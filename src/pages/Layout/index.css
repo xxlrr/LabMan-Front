@@ -1,0 +1,20 @@
+.header {
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #ebebeb;
+  background-color: #fff;
+  color: #487bd7;
+  padding: 0px 30px;
+}
+
+.user {
+  font-size: 14px;
+  font-weight: normal;
+  float: right;
+}
+
+.content {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+}
