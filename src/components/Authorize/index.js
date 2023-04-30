@@ -1,10 +1,11 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import { getUserInfo } from "../../utils";
 
-// a component added added authentication to the children component
+// a component added added authentication to the child component
 // if roles == [], allows logged-in users access
 // if roles != [], allows users who logged-in and role in roles access
-function AuthRoute({ children, roles = [], reject = <h3>Unauthorized</h3> }) {
+function AuthChildren({ children, roles = [], reject = <h3>Unauthorized</h3> }) {
   const userInfo = getUserInfo();
   if (!userInfo) {
     return reject;
@@ -15,6 +16,22 @@ function AuthRoute({ children, roles = [], reject = <h3>Unauthorized</h3> }) {
   }
 
   return children;
+}
+
+// a component added added authentication to the child route components
+// if roles == [], allows logged-in users access
+// if roles != [], allows users who logged-in and role in roles access
+function AuthRoute({ roles = [], reject = <h3>Unauthorized</h3> }) {
+  const userInfo = getUserInfo();
+  if (!userInfo) {
+    return reject;
+  }
+
+  if (roles.length > 0 && !roles.includes(userInfo.role)) {
+    return reject;
+  }
+
+  return <Outlet />;
 }
 
 // a HOC added authentication to the component
@@ -30,4 +47,4 @@ const withAuth = (Component, roles = [], reject = <h3>Unauthorized</h3>) => {
   };
 };
 
-export { AuthRoute, withAuth };
+export { AuthChildren, AuthRoute, withAuth };
