@@ -2,9 +2,9 @@ import React from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import { Layout, Menu, Dropdown, message } from "antd";
 import {
-  ProfileOutlined,
+  LaptopOutlined,
   SnippetsOutlined,
-  BulbOutlined,
+  NotificationOutlined,
 } from "@ant-design/icons";
 import { useStore } from "../../store";
 
@@ -17,7 +17,7 @@ const sider_items = [
   {
     roles: ["Manager"],
     key: "manage",
-    icon: <ProfileOutlined />,
+    icon: <LaptopOutlined />,
     children: [
       {
         label: "equipment list",
@@ -46,9 +46,9 @@ const sider_items = [
     label: "Borrow",
   },
   {
-    key: "/info",
-    icon: <BulbOutlined />,
-    label: "Infomation",
+    key: "/about",
+    icon: <NotificationOutlined />,
+    label: "About",
   },
 ];
 
