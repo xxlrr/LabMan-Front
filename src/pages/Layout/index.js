@@ -4,6 +4,7 @@ import { Layout, Menu, Dropdown, message } from "antd";
 import {
   ProfileOutlined,
   SnippetsOutlined,
+  BulbOutlined,
 } from "@ant-design/icons";
 import { useStore } from "../../store";
 
@@ -43,6 +44,11 @@ const sider_items = [
       },
     ],
     label: "Borrow",
+  },
+  {
+    key: "/info",
+    icon: <BulbOutlined />,
+    label: "Infomation",
   },
 ];
 

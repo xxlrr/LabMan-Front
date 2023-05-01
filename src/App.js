@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Layout from "./pages/Layout";
 import Equipment from "./pages/Equipment";
 import Borrow from "./pages/Borrow";
+import About from "./pages/About/about";
 
 // add feature that redirect to `/login` if the user is not logged in
 const LayoutWithAuth = withAuth(Layout, [], <Navigate to="/login" />);
@@ -13,6 +14,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LayoutWithAuth/>}>
+          <Route index element={<About />}/>
           <Route path="borrow" element={<AuthRoute roles={["User", "Manager"]} />}>
             <Route path="" element={<Borrow />} />
             <Route path="add" />
@@ -23,6 +25,7 @@ function App() {
             <Route path="add" />
             <Route path="edit" />
           </Route>
+          <Route path="*" element={<About />}/>
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>
