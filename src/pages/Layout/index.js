@@ -1,22 +1,71 @@
-import { Layout, Menu, Dropdown, message } from "antd";
-import { useNavigate, Navigate } from "react-router-dom";
 import React from "react";
+import { useNavigate, Outlet } from "react-router-dom";
+import { Layout, Menu, Dropdown, message } from "antd";
 import {
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
+  ProfileOutlined,
+  SnippetsOutlined,
 } from "@ant-design/icons";
-import "./index.css";
 import { useStore } from "../../store";
 
-const { Header, Content, Sider } = Layout;
+import "./index.css";
+
+const { Header, Sider } = Layout;
+
+// the sider menu times
+const sider_items = [
+  {
+    roles: ["Manager"],
+    key: "manage",
+    icon: <ProfileOutlined />,
+    children: [
+      {
+        label: "equipment list",
+        key: "/equipment",
+      },
+      {
+        label: "add equipment",
+        key: "/equipment/add",
+      },
+    ],
+    label: "Manage",
+  },
+  {
+    key: "borrow",
+    icon: <SnippetsOutlined />,
+    children: [
+      {
+        label: "borrowing record",
+        key: "/borrow",
+      },
+      {
+        label: "add borrowing",
+        key: "/borrow/add",
+      },
+    ],
+    label: "Borrow",
+  },
+];
+
+// filter items by the given role
+const filterItemByRole = (items, role) => {
+  const new_items = [];
+  if (!role) return new_items;
+
+  items.forEach((item) => {
+    if (item.children) filterItemByRole(item.children);
+    if (item.roles && !item.roles.includes(role)) return;
+    new_items.push(item);
+  });
+  return new_items;
+};
 
 function PageLayout() {
   const { loginStore, userStore } = useStore();
+  const userInfo = userStore.userInfo ? userStore.userInfo : {};
 
   // logout function
   const navigate = useNavigate();
-  const logout = async function () {
+  const logout = function () {
     loginStore.logout();
     userStore.clearUserInfo();
     navigate("/login");
@@ -31,25 +80,6 @@ function PageLayout() {
     },
   ];
 
-  // the sider menu times
-  const sider_items = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-    (icon, index) => {
-      const key = String(index + 1);
-      return {
-        key: `sub${key}`,
-        icon: React.createElement(icon),
-        label: `subnav ${key}`,
-        children: new Array(4).fill(null).map((_, j) => {
-          const subKey = index * 4 + j + 1;
-          return {
-            key: subKey,
-            label: `option${subKey}`,
-          };
-        }),
-      };
-    }
-  );
-
   return (
     <Layout style={{ height: "100vh" }}>
       <Header className="header">
@@ -62,7 +92,9 @@ function PageLayout() {
               arrow={true}
               placement="bottom"
             >
-              <span>{userStore.userInfo.username || "[Anonymity]"}</span>
+              <span>
+                {userInfo.username ? userInfo.username : "[Anonymity]"}
+              </span>
             </Dropdown>
           </span>
         </div>
@@ -71,14 +103,15 @@ function PageLayout() {
         <Sider width={200}>
           <Menu
             mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
+            onClick={(e) => {
+              navigate(e.key);
+            }}
+            items={filterItemByRole(sider_items, userInfo.role)}
             style={{ height: "100%", borderRight: 0 }}
-            items={sider_items}
           />
         </Sider>
         <Layout style={{ padding: "16px 16px" }}>
-          <Content className="content">Content</Content>
+          <Outlet />
         </Layout>
       </Layout>
     </Layout>
