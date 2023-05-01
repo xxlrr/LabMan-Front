@@ -40,9 +40,9 @@ function AuthRoute({ roles = [], reject = <h3>Unauthorized</h3> }) {
 const withAuth = (Component, roles = [], reject = <h3>Unauthorized</h3>) => {
   return (props) => {
     return (
-      <AuthRoute coles={roles} reject={reject}>
+      <AuthChildren coles={roles} reject={reject}>
         <Component {...props} />
-      </AuthRoute>
+      </AuthChildren>
     );
   };
 };
