@@ -112,7 +112,7 @@ function PageLayout() {
             onClick={(e) => {
               navigate(e.key);
             }}
-            items={filterItemByRole(sider_items, userInfo.role)}
+            items={sider_items}
             style={{ height: "100%", borderRight: 0 }}
           />
         </Sider>
