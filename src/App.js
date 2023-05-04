@@ -14,7 +14,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout/>}>
-          <Route index element={<About />}/>
+          <Route index element={<About />} />
           <Route path="borrow">
             <Route path="" element={<Borrow />} />
             <Route path="add" />
@@ -25,7 +25,7 @@ function App() {
             <Route path="add" />
             <Route path="edit" />
           </Route>
-          <Route path="*" element={<About />}/>
+          <Route path="*" element={<About />} />
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>

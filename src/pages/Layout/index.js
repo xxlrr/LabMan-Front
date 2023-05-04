@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate, Outlet } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 import { Layout, Menu, Dropdown, message } from "antd";
 import {
   LaptopOutlined,
@@ -12,7 +13,7 @@ import "./index.css";
 
 const { Header, Sider } = Layout;
 
-// the sider menu times
+// the sider menu items
 const sider_items = [
   {
     roles: ["Manager"],
@@ -58,8 +59,8 @@ const filterItemByRole = (items, role) => {
   if (!role) return new_items;
 
   items.forEach((item) => {
-    if (item.children) filterItemByRole(item.children);
     if (item.roles && !item.roles.includes(role)) return;
+    if (item.children) item.children = filterItemByRole(item.children);
     new_items.push(item);
   });
   return new_items;
@@ -124,4 +125,4 @@ function PageLayout() {
   );
 }
 
-export default PageLayout;
+export default observer(PageLayout);
