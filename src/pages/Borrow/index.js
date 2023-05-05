@@ -1,4 +1,4 @@
-import "./index.css";
+import styles from "./index.moudle.css";
 
 function Borrow() {
   return "Borrow";

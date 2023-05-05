@@ -1,9 +1,9 @@
-import "./index.css";
+import styles from "./index.module.css";
 
 function About() {
   return (
-    <div className="center">
-      <h1 className="title">LabMan</h1>
+    <div className={styles.center}>
+      <h1 className={styles.title}>LabMan</h1>
       <p>the Back-end of Laboratory Equipment Management System</p>
       <p>Code by @MCI-TeamA</p>
     </div>
