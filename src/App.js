@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Layout from "./pages/Layout";
 import Equipment from "./pages/Equipment";
 import Borrow from "./pages/Borrow";
-import About from "./pages/About/about";
+import About from "./pages/About";
 
 // add feature that redirect to `/login` if the user is not logged in
 // const LayoutWithAuth = withAuth(Layout, [], <Navigate to="/login" />);
