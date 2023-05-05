@@ -1,4 +1,4 @@
-import "./index.css";
+import "./index.module.css";
 
 function Equipment() {
   return "Equipment";

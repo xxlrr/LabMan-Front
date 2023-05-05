@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
 import { useStore } from "../../store";
 
-import "./index.css";
+import style from "./index.module.css";
 
 function Login() {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ function Login() {
   }
 
   return (
-    <div className="loginBox">
+    <div className={style.loginBox}>
       <h4>LabMan - Login</h4>
       <Form
         initialValues={{ username: "", password: "" }}

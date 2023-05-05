@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons";
 import { useStore } from "../../store";
 
-import "./index.css";
+import style from "./index.module.css";
 
 const { Header, Sider } = Layout;
 
@@ -89,10 +89,11 @@ function PageLayout() {
 
   return (
     <Layout style={{ height: "100vh" }}>
-      <Header className="header">
-        <div className="logo" />
-        LabMan
-        <div className="user">
+      <Header className={style.header}>
+        <div className={style.logo}>
+          LabMan
+        </div>
+        <div className={style.user}>
           <span>
             <Dropdown
               menu={{ items: user_items }}
