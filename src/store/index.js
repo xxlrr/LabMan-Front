@@ -2,6 +2,7 @@
 import React from "react";
 import LoginStore from "./login.Store";
 import UserStore from "./user.Store";
+import EquipStore from "./equip.Store";
 
 // import { configure } from "mobx"
 // configure({
@@ -12,6 +13,7 @@ class RootStore {
   constructor() {
     this.loginStore = new LoginStore();
     this.userStore = new UserStore();
+    this.equipStore = new EquipStore();
     // ...
   }
 }
