@@ -1,11 +1,12 @@
 import React from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { Layout, Menu, Dropdown, message } from "antd";
+import { Layout, Menu, Dropdown, message, Avatar } from "antd";
 import {
   LaptopOutlined,
   SnippetsOutlined,
   NotificationOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { useStore } from "../../store";
 
@@ -83,6 +84,21 @@ function PageLayout() {
   const user_items = [
     {
       key: "1",
+      label: (
+        <span>
+          Sign in as {" "}
+          <span style={{ color: "#487bd7" }}>
+            {userInfo.username ? userInfo.username : "[Anonymity]"}
+          </span>
+        </span>
+      ),
+      disabled: true,
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "2",
       label: <span onClick={logout}>Logout</span>,
     },
   ];
@@ -90,22 +106,23 @@ function PageLayout() {
   return (
     <Layout style={{ height: "100vh" }}>
       <Header className={styles.header}>
-        <div className={styles.logo}>
-          LabMan
-        </div>
-        <div className={styles.user}>
-          <span>
-            <Dropdown
-              menu={{ items: user_items }}
-              arrow={true}
-              placement="bottom"
-            >
-              <span>
-                {userInfo.username ? userInfo.username : "[Anonymity]"}
-              </span>
-            </Dropdown>
-          </span>
-        </div>
+        <span className={styles.logo}>LabMan</span>
+        <span className={styles.user}>
+          <Dropdown
+            menu={{ items: user_items }}
+            arrow={true}
+            placement="bottomLeft" 
+          >
+            <span>
+              <Avatar
+                size="small"
+                icon={<UserOutlined />}
+                style={{ backgroundColor: "#87d068" }}
+              />
+              ▾
+            </span>
+          </Dropdown>
+        </span>
       </Header>
       <Layout>
         <Sider width={200}>
