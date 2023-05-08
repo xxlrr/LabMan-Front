@@ -16,6 +16,7 @@ import {
 } from "antd";
 import { SearchOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useStore } from "../../store";
 
 import styles from "./index.module.css";
@@ -135,6 +136,7 @@ const SearchForm = ({ onFinish, onClear }) => {
 
 function Equipment() {
   const refContent = useRef();
+  const navigate = useNavigate();
   const { equipStore } = useStore();
 
   const [params, setParams] = useState({});
@@ -193,7 +195,7 @@ function Equipment() {
       key: "action",
       render: (_, row) => (
         <Space size="small" wrap>
-          <Button type="link" onClick={() => {}}>
+          <Button type="link" onClick={()=>navigate(`/equipment/edit/${row.id}`)}>
             Edit
           </Button>
           <Button type="link" danger onClick={() => showDeleteConfirm(row.id)}>
