@@ -11,9 +11,11 @@ import {
   Image,
   Tag,
   Tooltip,
+  Modal,
+  message,
 } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { SearchOutlined, ExclamationCircleFilled } from "@ant-design/icons";
+import { useState, useEffect, useRef } from "react";
 import { useStore } from "../../store";
 
 import styles from "./index.module.css";
@@ -21,7 +23,7 @@ import styles from "./index.module.css";
 const { Content } = Layout;
 const { Option } = Select;
 
-const columns = [
+const COLUMNS = [
   {
     title: "Name",
     dataIndex: "name",
@@ -54,7 +56,7 @@ const columns = [
     key: "category",
     ellipsis: true,
     width: 120,
-    render: (text) => text ? <Tag color="geekblue">{text}</Tag> : "-",
+    render: (text) => (text ? <Tag color="geekblue">{text}</Tag> : "-"),
   },
   {
     title: "Stock",
@@ -80,21 +82,6 @@ const columns = [
     key: "state",
     render: (text) => (
       <Tag color={text === "available" ? "green" : "volcano"}>{text}</Tag>
-    ),
-  },
-  {
-    title: "Action",
-    dataIndex: "",
-    key: "action",
-    render: () => (
-      <Space size="small" wrap>
-        <Button type="link" onClick={() => {}}>
-          Edit
-        </Button>
-        <Button type="link" danger onClick={() => {}}>
-          Delete
-        </Button>
-      </Space>
     ),
   },
 ];
@@ -162,21 +149,65 @@ function Equipment() {
     };
 
     // load the table for the first time and then resize
+    /* ************ Warning !!!! ***********
+     * This piece of code should not exist, its purpose is first resize.
+     * I could't find a better trigger event, so I have to load data here once.
+     * I tried the window.load event, but didn't work well.
+     * ************************************* */
     equipStore.getEquips().then(setData).then(resizeScrollY);
 
     window.addEventListener("resize", resizeScrollY);
     return () => window.removeEventListener("resize", resizeScrollY);
   }, []);
 
-  // update data when params or pagination is changed.
-  useEffect(() => {
+  // update the data of the current page
+  const updateTable = () => {
     const { current, pageSize } = pagination;
     equipStore.getEquips({ ...params, current, pageSize }).then(setData);
-  }, [params, pagination]);
+  };
+
+  // update data when params or pagination is changed.
+  useEffect(updateTable, [params, pagination]);
+
+  const showDeleteConfirm = (id) => {
+    console.log(id);
+    Modal.confirm({
+      title: "Are you sure delete it?",
+      icon: <ExclamationCircleFilled />,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      async onOk() {
+        await equipStore.delEquip(id);
+        message.success("Delete successfully");
+        updateTable();
+      },
+    });
+  };
+
+  const columns = [
+    ...COLUMNS,
+    {
+      title: "Action",
+      dataIndex: "",
+      key: "action",
+      render: (_, row) => (
+        <Space size="small" wrap>
+          <Button type="link" onClick={() => {}}>
+            Edit
+          </Button>
+          <Button type="link" danger onClick={() => showDeleteConfirm(row.id)}>
+            Delete
+          </Button>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <Content ref={refContent} className={styles.content}>
       <Table
+        rowKey="id"
         className={styles.table}
         dataSource={data.list}
         columns={columns}
@@ -187,11 +218,11 @@ function Equipment() {
           <SearchForm
             onFinish={(values) => {
               setParams(values);
-              setPagination({current:1});
+              setPagination({ current: 1 });
             }}
             onClear={() => {
               setParams({});
-              setPagination({current:1});
+              setPagination({ current: 1 });
             }}
           />
         )}
