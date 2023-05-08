@@ -7,16 +7,19 @@ class EquipStore {
     return res;
   };
 
-  addEquip = (equip) => {
-    request.post("/api/books/", equip);
+  addEquip = async (equip) => {
+    const res = await request.post("/equipment/", equip);
+    return res;
   };
 
   modEquip = (id, equip) => {
-    request.put(`/api/books/${id}`, equip);
+    const res = request.put(`/equipment/${id}`, equip);
+    return res;
   };
 
-  delEquip = (id) => {
-    request.delete(`/api/books/${id}`);
+  delEquip = async (id) => {
+    const res = request.delete(`/equipment/${id}`);
+    return res;
   };
 }
 
