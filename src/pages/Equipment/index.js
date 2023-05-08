@@ -13,87 +13,13 @@ import {
   Tooltip,
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { useStore } from "../../store";
 
 import styles from "./index.module.css";
 
 const { Content } = Layout;
 const { Option } = Select;
-
-const dataSource = [
-  {
-    key: "1",
-    name: "Mike",
-    category: "",
-    description: "10 Downing Street",
-    picture: "",
-    state: "available",
-    stock: 90,
-  },
-  {
-    key: "2",
-    name: "Mike",
-    category: "",
-    description: "10 Downing Street",
-    picture: "",
-    state: "available",
-    stock: 90,
-  },
-  {
-    key: "3",
-    name: "Mike",
-    category: "",
-    description: "10 Downing Street",
-    picture: "",
-    state: "unavailable",
-    stock: 90,
-  },
-  {
-    key: "4",
-    name: "Mike",
-    category: "",
-    description: "10 Downing Street",
-    picture: "",
-    state: "available",
-    stock: 90,
-  },
-  {
-    key: "5",
-    name: "Mike",
-    category: "",
-    description: "10 Downing Street",
-    picture: "",
-    state: "available",
-    stock: 90,
-  },
-  {
-    key: "6",
-    name: "Mike",
-    category: "",
-    description: "10 Downing Street",
-    picture: "",
-    state: "available",
-    stock: 90,
-  },
-  {
-    key: "7",
-    name: "Mike",
-    category: "",
-    description: "10 Downing Street",
-    picture: "",
-    state: "available",
-    stock: 90,
-  },
-  {
-    key: "8",
-    name: "Mike",
-    category: "",
-    description: "10 Downing Street",
-    picture: "",
-    state: "available",
-    stock: 90,
-  },
-];
 
 const columns = [
   {
@@ -171,15 +97,9 @@ const columns = [
   },
 ];
 
-const Search = () => {
+const SearchForm = ({ onFinish, onClear }) => {
   return (
-    <Form
-      // form={form}
-      name="search"
-      size="small"
-      // className={styles.form}
-      // onFinish={handleSearchFinish}
-    >
+    <Form name="search" size="small" onFinish={onFinish}>
       <Row gutter={24}>
         <Col span={8}>
           <Form.Item name="name" label="Equipment Name">
@@ -213,7 +133,9 @@ const Search = () => {
               >
                 Search
               </Button>
-              <Button htmlType="reset">Clear</Button>
+              <Button htmlType="reset" onClick={onClear}>
+                Clear
+              </Button>
             </Space>
           </Form.Item>
         </Col>
@@ -223,32 +145,55 @@ const Search = () => {
 };
 
 function Equipment() {
-  const [scrollHeight, setScrollHeight] = useState(0);
   const refContent = useRef();
+  const { equipStore } = useStore();
 
-  // resize the table-scroll based on the height of the Content component
+  const [params, setParams] = useState({});
+  const [pagination, setPagination] = useState({});
+  const [scrollHeight, setScrollHeight] = useState(184);
+  const [data, setData] = useState({});
+
   useEffect(() => {
-    const resizeScrollY = (e) => {
-      console.log(e);
-      console.log(refContent.current.clientHeight);
+    // resize the table-scroll based on the height of the Content component
+    const resizeScrollY = () => {
       setScrollHeight(refContent.current.clientHeight - 250);
     };
-    resizeScrollY();
+
+    // load the table for the first time and then resize
+    equipStore.getEquips().then(setData).then(resizeScrollY);
 
     window.addEventListener("resize", resizeScrollY);
-    return e => window.removeEventListener("resize", resizeScrollY);
-  }, [/* todo: data loaded */]);
+    return () => window.removeEventListener("resize", resizeScrollY);
+  }, []);
+
+  // update data when params or pagination is changed.
+  useEffect(() => {
+    const { current, pageSize } = pagination;
+    equipStore.getEquips({ ...params, current, pageSize }).then(setData);
+  }, [params, pagination]);
 
   return (
     <Content ref={refContent} className={styles.content}>
       <Table
         className={styles.table}
-        dataSource={dataSource}
+        dataSource={data.list}
         columns={columns}
-        pagination={{ pageSize: 10 }}
+        pagination={{ ...pagination, total: data.total, showSizeChanger: true }}
         tableLayout="fixed"
         scroll={{ y: scrollHeight }}
-        title={Search}
+        title={() => (
+          <SearchForm
+            onFinish={(values) => {
+              setParams(values);
+              setPagination({current:1});
+            }}
+            onClear={() => {
+              setParams({});
+              setPagination({current:1});
+            }}
+          />
+        )}
+        onChange={setPagination}
       />
     </Content>
   );
