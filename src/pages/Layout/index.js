@@ -87,7 +87,7 @@ function PageLayout() {
       label: (
         <span>
           Sign in as {" "}
-          <span style={{ color: "#487bd7" }}>
+          <span style={{ color: "gray" }}>
             {userInfo.username ? userInfo.username : "[Anonymity]"}
           </span>
         </span>
