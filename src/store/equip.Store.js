@@ -3,23 +3,23 @@ import { request } from "../utils";
 
 class EquipStore {
   getEquips = async (params) => {
-    const res = await request.get("/equipment?" + qs.stringify(params));
-    return res;
+    return await request.get("/equipment?" + qs.stringify(params));
+  };
+
+  getEquip = async (id) => {
+    return await request.get(`/equipment/${id}`);
   };
 
   addEquip = async (equip) => {
-    const res = await request.post("/equipment/", equip);
-    return res;
+    return await request.post("/equipment/", equip);
   };
 
   modEquip = (id, equip) => {
-    const res = request.put(`/equipment/${id}`, equip);
-    return res;
+    return request.put(`/equipment/${id}/`, equip);
   };
 
   delEquip = async (id) => {
-    const res = request.delete(`/equipment/${id}`);
-    return res;
+    return request.delete(`/equipment/${id}/`);
   };
 }
 
