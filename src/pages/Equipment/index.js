@@ -152,15 +152,7 @@ function Equipment() {
     const resizeScrollY = () => {
       setScrollHeight(refContent.current.clientHeight - 250);
     };
-
-    // load the table for the first time and then resize
-    /* ************ Warning !!!! ***********
-     * This piece of code should not exist, its purpose is first resize.
-     * I could't find a better trigger event, so I have to load data here once.
-     * I tried the window.load event, but didn't work well.
-     * ************************************* */
-    equipStore.getEquips().then(setData).then(resizeScrollY);
-
+    
     window.addEventListener("resize", resizeScrollY);
     return () => window.removeEventListener("resize", resizeScrollY);
   }, []);
@@ -217,7 +209,7 @@ function Equipment() {
         columns={columns}
         pagination={{ ...pagination, total: data.total, showSizeChanger: true }}
         tableLayout="fixed"
-        scroll={{ y: scrollHeight }}
+        scroll={{ y: "calc(100% - 250px)" }}
         title={() => (
           <SearchForm
             onFinish={(values) => {
