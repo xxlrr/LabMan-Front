@@ -22,8 +22,8 @@ function App() {
           </Route>
           <Route path="equipment">
             <Route path="" element={<Equipment />} />
-            <Route path="add" />
-            <Route path="edit" />
+            <Route path="add" element={<Equipment.Add />} />
+            <Route path="edit/:id/" element={<Equipment.Edit />} />
           </Route>
           <Route path="*" element={<About />} />
         </Route>
