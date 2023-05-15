@@ -1,16 +1,25 @@
-import { getEquipmentDetail } from "@/api";
-import { EquipmentForm } from "@/components";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { message } from "antd";
+
+import { useStore } from "../../../store";
+import EquipmentForm from "../../../components/EquipForm";
 
 export default function Equipment() {
+  const params = useParams();
+  const navigate = useNavigate();
+  const { equipStore } = useStore();
   const [data, setData] = useState();
-  const router = useRouter();
+  const handleFinish = (form) => {
+    equipStore
+      .modEquip(params.id, form)
+      .then(() => message.success("update successfully"))
+      .then(() => navigate("/equipment"));
+  };
+
   useEffect(() => {
-    (async () => {
-      const res = await getEquipmentDetail(router.query.id);
-      setData(res.data);
-    })();
-  }, [router]);
-  return <EquipmentForm title="Edit Equipment" editData={data} />;
+    equipStore.getEquip(params.id).then(setData);
+  }, []);
+
+  return <EquipmentForm editData={data} onFinish={handleFinish} />;
 }
