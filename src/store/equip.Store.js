@@ -3,7 +3,7 @@ import { request } from "../utils";
 
 class EquipStore {
   getEquips = async (params) => {
-    return await request.get("/equipment?" + qs.stringify(params));
+    return await request.get("/equipment/?" + qs.stringify(params));
   };
 
   getEquip = async (id) => {

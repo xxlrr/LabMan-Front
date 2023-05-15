@@ -19,6 +19,9 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../store";
 
+import Edit from "./Edit";
+import Add from "./Add";
+
 import styles from "./index.module.css";
 
 const { Content } = Layout;
@@ -33,9 +36,9 @@ const COLUMNS = [
     width: 150,
   },
   {
-    title: "Picture",
-    dataIndex: "picture",
-    key: "picture",
+    title: "Photo",
+    dataIndex: "photo",
+    key: "photo",
     ellipsis: true,
     width: 120,
     render: (data) => (
@@ -140,7 +143,7 @@ function Equipment() {
   const { equipStore } = useStore();
 
   const [params, setParams] = useState({});
-  const [pagination, setPagination] = useState({});
+  const [pagination, setPagination] = useState({"current": 1, "pageSize": 10});
   const [scrollHeight, setScrollHeight] = useState(184);
   const [data, setData] = useState({});
 
@@ -172,7 +175,6 @@ function Equipment() {
   useEffect(updateTable, [params, pagination]);
 
   const showDeleteConfirm = (id) => {
-    console.log(id);
     Modal.confirm({
       title: "Are you sure delete it?",
       icon: <ExclamationCircleFilled />,
@@ -220,11 +222,11 @@ function Equipment() {
           <SearchForm
             onFinish={(values) => {
               setParams(values);
-              setPagination({ current: 1 });
+              setPagination({ ...pagination, current: 1 });
             }}
             onClear={() => {
               setParams({});
-              setPagination({ current: 1 });
+              setPagination({ ...pagination, current: 1 });
             }}
           />
         )}
@@ -233,5 +235,8 @@ function Equipment() {
     </Content>
   );
 }
+
+Equipment.Add = Add;
+Equipment.Edit = Edit;
 
 export default Equipment;
