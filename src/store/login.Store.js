@@ -12,7 +12,7 @@ class LoginStore {
   // login
   login = async (username, password) => {
     // call the login API
-    const res = await request.post("/login", {
+    const res = await request.post("/login/", {
       username,
       password,
     });

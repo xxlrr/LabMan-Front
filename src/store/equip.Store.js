@@ -7,7 +7,7 @@ class EquipStore {
   };
 
   getEquip = async (id) => {
-    return await request.get(`/equipment/${id}`);
+    return await request.get(`/equipment/${id}/`);
   };
 
   addEquip = async (equip) => {

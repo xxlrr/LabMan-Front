@@ -10,7 +10,7 @@ class UserStore {
 
   // fetch user info by calling the user profile API
   fetchUserInfo = async () => {
-    const res = await request.get("/user/profile");
+    const res = await request.get("/user/profile/");
     this.setUserInfo(res);
   };
 
