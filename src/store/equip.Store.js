@@ -14,12 +14,12 @@ class EquipStore {
     return await request.post("/equipment/", equip);
   };
 
-  modEquip = (id, equip) => {
-    return request.put(`/equipment/${id}/`, equip);
+  modEquip = async (id, equip) => {
+    return await request.put(`/equipment/${id}/`, equip);
   };
 
   delEquip = async (id) => {
-    return request.delete(`/equipment/${id}/`);
+    return await request.delete(`/equipment/${id}/`);
   };
 }
 
