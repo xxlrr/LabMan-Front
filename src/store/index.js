@@ -3,6 +3,7 @@ import React from "react";
 import LoginStore from "./login.Store";
 import UserStore from "./user.Store";
 import EquipStore from "./equip.Store";
+import BorrowStore from "./borrow.Store";
 
 // import { configure } from "mobx"
 // configure({
@@ -14,6 +15,7 @@ class RootStore {
     this.loginStore = new LoginStore();
     this.userStore = new UserStore();
     this.equipStore = new EquipStore();
+    this.borrowStore = new BorrowStore();
     // ...
   }
 }
