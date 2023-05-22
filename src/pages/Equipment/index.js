@@ -10,7 +10,6 @@ import {
   Table,
   Image,
   Tag,
-  Tooltip,
   Modal,
   message,
 } from "antd";
@@ -44,8 +43,7 @@ const COLUMNS = [
     render: (data) => (
       <Image
         alt=""
-        width={50}
-        height={50}
+        height={40}
         src={
           data
             ? data
@@ -63,21 +61,16 @@ const COLUMNS = [
     render: (text) => (text ? <Tag color="geekblue">{text}</Tag> : "-"),
   },
   {
-    title: "Stock",
-    dataIndex: "stock",
-    width: 80,
-    key: "stock",
-  },
-  {
     title: "Description",
     dataIndex: "description",
     key: "description",
     ellipsis: true,
-    render: (text) => (
-      <Tooltip placement="topLeft" title={text}>
-        {text}
-      </Tooltip>
-    ),
+  },
+  {
+    title: "Stock",
+    dataIndex: "stock",
+    width: 80,
+    key: "stock",
   },
   {
     title: "State",
@@ -144,18 +137,7 @@ function Equipment() {
 
   const [params, setParams] = useState({});
   const [pagination, setPagination] = useState({"current": 1, "pageSize": 10});
-  const [scrollHeight, setScrollHeight] = useState(184);
   const [data, setData] = useState({});
-
-  useEffect(() => {
-    // resize the table-scroll based on the height of the Content component
-    const resizeScrollY = () => {
-      setScrollHeight(refContent.current.clientHeight - 250);
-    };
-    
-    window.addEventListener("resize", resizeScrollY);
-    return () => window.removeEventListener("resize", resizeScrollY);
-  }, []);
 
   // update the data of the current page
   const updateTable = () => {
@@ -208,8 +190,6 @@ function Equipment() {
         dataSource={data.list}
         columns={columns}
         pagination={{ ...pagination, total: data.total, showSizeChanger: true }}
-        tableLayout="fixed"
-        scroll={{ y: "calc(100% - 250px)" }}
         title={() => (
           <SearchForm
             onFinish={(values) => {
