@@ -17,8 +17,7 @@ function App() {
           <Route index element={<About />} />
           <Route path="borrow">
             <Route path="" element={<Borrow />} />
-            <Route path="add" />
-            <Route path="edit" />
+            <Route path="add" element={<Borrow.Add />}/>
           </Route>
           <Route path="equipment">
             <Route path="" element={<Equipment />} />

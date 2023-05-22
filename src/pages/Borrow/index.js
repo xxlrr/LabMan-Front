@@ -17,6 +17,8 @@ import { useState, useEffect, useRef } from "react";
 import dayjs from "dayjs";
 import { useStore } from "../../store";
 
+import Add from "./Add";
+
 import styles from "./index.module.css";
 
 const { Content } = Layout;
@@ -201,5 +203,7 @@ function Borrow() {
     </Content>
   );
 }
+
+Borrow.Add = Add;
 
 export default Borrow;
