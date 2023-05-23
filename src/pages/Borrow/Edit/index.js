@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import {
   Layout,
   Button,
@@ -5,7 +6,6 @@ import {
   Select,
   Row,
   Col,
-  Input,
   InputNumber,
   Typography,
   Space,
@@ -14,7 +14,6 @@ import {
 } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import dayjs from "dayjs";
 import { useStore } from "../../../store";
 
 import styles from "./index.module.css";
@@ -41,7 +40,6 @@ function Edit() {
       setUserList(res.list);
     });
     borrowStore.getBorrow(params.id).then((res) => {
-      console.log(res);
       let values = {
         ...res,
         user_id: res.user.id,
@@ -154,7 +152,6 @@ function Edit() {
                 <Form.Item
                   noStyle
                   name="duration"
-                  onChange={updateDueTime}
                   rules={[
                     {
                       required: true,
@@ -162,12 +159,11 @@ function Edit() {
                     },
                   ]}
                 >
-                  <InputNumber min={1} />
+                  <InputNumber min={1} onChange={updateDueTime}/>
                 </Form.Item>
                 <Text type="secondary">Due Time: {dueTime}</Text>
               </Space>
             </Form.Item>
-
             <Form.Item label="Return Time" name="return_time">
               <DatePicker
                 format="YYYY-MM-DD HH:mm:ss"
