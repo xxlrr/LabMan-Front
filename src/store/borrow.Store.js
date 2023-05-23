@@ -1,4 +1,5 @@
 import qs from "qs";
+import dayjs from "dayjs";
 import { request } from "../utils";
 
 class BorrowStore {
@@ -21,6 +22,10 @@ class BorrowStore {
   delBorrow = async (id) => {
     return request.delete(`/borrow/${id}/`);
   };
+
+  backEquip = async (id) => {
+    return request.put(`/borrow/${id}/back/`);
+  }
 }
 
 export default BorrowStore;

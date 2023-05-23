@@ -41,12 +41,12 @@ const COLUMNS = [
     key: "state",
     render: (text) => {
       const colors = {
-        "BORROWING": "processing",
-        "RETURNED": "success",
-        "LATE": "warning",
-        "MISSING": "error",
-      }
-      return <Tag color={colors[text]}>{text}</Tag>
+        BORROWING: "processing",
+        RETURNED: "success",
+        LATE: "warning",
+        MISSING: "error",
+      };
+      return <Tag color={colors[text]}>{text}</Tag>;
     },
   },
   {
@@ -66,7 +66,10 @@ const COLUMNS = [
     title: "Due Time",
     dataIndex: "duration",
     key: "duration",
-    render: (_, row) => dayjs(row.borrow_time).add(row.duration, 'day').format("YYYY-MM-DD HH:mm:ss"),
+    render: (_, row) =>
+      dayjs(row.borrow_time)
+        .add(row.duration, "day")
+        .format("YYYY-MM-DD HH:mm:ss"),
   },
   {
     title: "Return Time",
@@ -134,7 +137,7 @@ function Borrow() {
   const { borrowStore } = useStore();
 
   const [params, setParams] = useState({});
-  const [pagination, setPagination] = useState({"current": 1, "pageSize": 10});
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
   const [data, setData] = useState({});
 
   // update the data of the current page
@@ -146,7 +149,27 @@ function Borrow() {
   // update data when params or pagination is changed.
   useEffect(updateTable, [params, pagination]);
 
-  const showDeleteConfirm = (id) => {
+  const showReturnConfirm = (equip) => {
+    Modal.confirm({
+      title: "Are you sure return it?",
+      icon: <ExclamationCircleFilled />,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      async onOk() {
+        try {
+          await borrowStore.backEquip(equip.id);
+          message.success("Return successfully");
+          updateTable();
+        } catch (e) {
+          const msg = e.response ? e.response.data.message : e.message;
+          message.warning(msg);
+        }
+      },
+    });
+  };
+
+  const showDeleteConfirm = (equip) => {
     Modal.confirm({
       title: "Are you sure delete it?",
       icon: <ExclamationCircleFilled />,
@@ -154,7 +177,7 @@ function Borrow() {
       okType: "danger",
       cancelText: "No",
       async onOk() {
-        await borrowStore.delBorrow(id);
+        await borrowStore.delBorrow(equip.id);
         message.success("Delete successfully");
         updateTable();
       },
@@ -169,10 +192,18 @@ function Borrow() {
       key: "action",
       render: (_, row) => (
         <Space size="small" wrap>
-          <Button type="link" onClick={()=>navigate(`/borrow/edit/${row.id}`)}>
+          {row.return_time ? null : (
+            <Button type="link" success onClick={() => showReturnConfirm(row)}>
+              Return
+            </Button>
+          )}
+          <Button
+            type="link"
+            onClick={() => navigate(`/borrow/edit/${row.id}`)}
+          >
             Edit
           </Button>
-          <Button type="link" danger onClick={() => showDeleteConfirm(row.id)}>
+          <Button type="link" danger onClick={() => showDeleteConfirm(row)}>
             Delete
           </Button>
         </Space>
