@@ -18,6 +18,7 @@ function App() {
           <Route path="borrow">
             <Route path="" element={<Borrow />} />
             <Route path="add" element={<Borrow.Add />}/>
+            <Route path="edit/:id/" element={<Borrow.Edit />} />
           </Route>
           <Route path="equipment">
             <Route path="" element={<Equipment />} />

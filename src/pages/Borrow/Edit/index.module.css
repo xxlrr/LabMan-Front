@@ -1,0 +1,18 @@
+.content {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 24px;
+  overflow: auto;
+}
+
+.form {
+  overflow: auto;
+  padding: 32px;
+  height: 100%;
+}
+
+.btn {
+  margin: 0 auto;
+  display: block;
+}
+  

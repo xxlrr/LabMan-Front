@@ -14,7 +14,7 @@ import {
   message,
 } from "antd";
 import { SearchOutlined, ExclamationCircleFilled } from "@ant-design/icons";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../store";
 
@@ -131,7 +131,6 @@ const SearchForm = ({ onFinish, onClear }) => {
 };
 
 function Equipment() {
-  const refContent = useRef();
   const navigate = useNavigate();
   const { equipStore } = useStore();
 
@@ -183,7 +182,7 @@ function Equipment() {
   ];
 
   return (
-    <Content ref={refContent} className={styles.content}>
+    <Content className={styles.content}>
       <Table
         rowKey="id"
         className={styles.table}

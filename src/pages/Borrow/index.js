@@ -13,11 +13,13 @@ import {
   message,
 } from "antd";
 import { SearchOutlined, ExclamationCircleFilled } from "@ant-design/icons";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { useStore } from "../../store";
 
 import Add from "./Add";
+import Edit from "./Edit";
 
 import styles from "./index.module.css";
 
@@ -128,7 +130,7 @@ const SearchForm = ({ onFinish, onClear }) => {
 };
 
 function Borrow() {
-  const refContent = useRef();
+  const navigate = useNavigate();
   const { borrowStore } = useStore();
 
   const [params, setParams] = useState({});
@@ -167,7 +169,7 @@ function Borrow() {
       key: "action",
       render: (_, row) => (
         <Space size="small" wrap>
-          <Button type="link" onClick={() => alert("Todo")}>
+          <Button type="link" onClick={()=>navigate(`/borrow/edit/${row.id}`)}>
             Edit
           </Button>
           <Button type="link" danger onClick={() => showDeleteConfirm(row.id)}>
@@ -179,7 +181,7 @@ function Borrow() {
   ];
 
   return (
-    <Content ref={refContent} className={styles.content}>
+    <Content className={styles.content}>
       <Table
         rowKey="id"
         className={styles.table}
@@ -205,5 +207,6 @@ function Borrow() {
 }
 
 Borrow.Add = Add;
+Borrow.Edit = Edit;
 
 export default Borrow;
