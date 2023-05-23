@@ -31,6 +31,7 @@ function Edit() {
   const [userList, setUserList] = useState([]);
   const [equipList, setEquipList] = useState([]);
   const [equipStock, setEquipStock] = useState(0);
+  const [dueTime, setDueTime] = useState(null);
 
   useEffect(() => {
     equipStore.getEquips().then((res) => {
@@ -40,6 +41,7 @@ function Edit() {
       setUserList(res.list);
     });
     borrowStore.getBorrow(params.id).then((res) => {
+      console.log(res);
       let values = {
         ...res,
         user_id: res.user.id,
@@ -49,8 +51,20 @@ function Edit() {
       };
       form.setFieldsValue(values);
       setEquipStock(res.equip.stock);
+      updateDueTime();
     });
   }, []);
+
+  const updateDueTime = () => {
+    let borrowTime = form.getFieldValue("borrow_time");
+    let duration = form.getFieldValue("duration");
+    if (borrowTime && duration) {
+      let dueTime = dayjs(borrowTime).add(duration, "day");
+      setDueTime(dueTime.format("YYYY-MM-DD HH:mm:ss"));
+    } else {
+      setDueTime(null);
+    }
+  };
 
   const handleFinish = (form) => {
     borrowStore
@@ -130,26 +144,30 @@ function Edit() {
               ]}
             >
               <DatePicker
+                onChange={updateDueTime}
                 format="YYYY-MM-DD HH:mm:ss"
                 showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
               />
             </Form.Item>
-            <Form.Item
-              label="Duration"
-              name="duration"
-              initialValue={7}
-              rules={[
-                {
-                  required: true,
-                  message: "Please input",
-                },
-              ]}
-            >
-              <Space size="large">
-                <InputNumber min={1} value={7} />
-                <Text type="secondary">Due Time: 2012-01-01 12:00:00</Text>
+            <Form.Item label="Duration">
+              <Space>
+                <Form.Item
+                  noStyle
+                  name="duration"
+                  onChange={updateDueTime}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input",
+                    },
+                  ]}
+                >
+                  <InputNumber min={1} />
+                </Form.Item>
+                <Text type="secondary">Due Time: {dueTime}</Text>
               </Space>
             </Form.Item>
+
             <Form.Item label="Return Time" name="return_time">
               <DatePicker
                 format="YYYY-MM-DD HH:mm:ss"
