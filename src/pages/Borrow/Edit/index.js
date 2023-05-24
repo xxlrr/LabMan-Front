@@ -17,6 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useStore } from "../../../store";
 
 import styles from "./index.module.css";
+import EquipCard from "../../../components/EquipCard";
 
 const { Content } = Layout;
 const { Text } = Typography;
@@ -29,7 +30,7 @@ function Edit() {
   const [form] = Form.useForm();
   const [userList, setUserList] = useState([]);
   const [equipList, setEquipList] = useState([]);
-  const [equipStock, setEquipStock] = useState(0);
+  const [currEquip, setCurrEquip] = useState(null);
   const [dueTime, setDueTime] = useState(null);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ function Edit() {
         return_time: res.return_time && dayjs(res.return_time),
       };
       form.setFieldsValue(values);
-      setEquipStock(res.equip.stock);
+      setCurrEquip(res.equip);
       updateDueTime();
     });
   }, []);
@@ -64,9 +65,9 @@ function Edit() {
     }
   };
 
-  const handleFinish = (form) => {
+  const handleFinish = (params) => {
     borrowStore
-      .modBorrow(params.id, form)
+      .modBorrow(params.id, params)
       .then(() => {
         message.success("update successfully");
         navigate("/borrow");
@@ -103,11 +104,11 @@ function Edit() {
                 showSearch
                 placeholder="Please select"
                 optionFilterProp="label"
-                onChange={(_, option) => setEquipStock(option.stock)}
+                onChange={(_, option) => setCurrEquip(option.equip)}
                 options={equipList.map((equip) => ({
                   label: equip.name,
                   value: equip.id,
-                  stock: equip.stock,
+                  equip: equip,
                 }))}
               />
             </Form.Item>
@@ -128,6 +129,7 @@ function Edit() {
                 options={userList.map((user) => ({
                   label: user.username,
                   value: user.id,
+                  user: user,
                 }))}
               />
             </Form.Item>
@@ -179,7 +181,7 @@ function Edit() {
                 },
               ]}
             >
-              {equipStock}
+              {currEquip?.stock}
             </Form.Item>
             <Form.Item noStyle>
               <Button type="primary" htmlType="submit" className={styles.btn}>
@@ -187,6 +189,9 @@ function Edit() {
               </Button>
             </Form.Item>
           </Form>
+        </Col>
+        <Col span={11}>
+          <EquipCard equip={currEquip} />
         </Col>
       </Row>
     </Content>
