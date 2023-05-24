@@ -11,6 +11,10 @@ import {
   Tag,
   Modal,
   message,
+  Typography,
+  Popover,
+  Descriptions,
+  Tooltip,
 } from "antd";
 import { SearchOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { useState, useEffect } from "react";
@@ -25,6 +29,7 @@ import styles from "./index.module.css";
 
 const { Content } = Layout;
 const { Option } = Select;
+const { Link, Text } = Typography;
 
 const COLUMNS = [
   {
@@ -33,6 +38,23 @@ const COLUMNS = [
     key: "quip_name",
     ellipsis: true,
     width: 150,
+    render: (text, row) => {
+      return (
+        <Popover
+          mouseEnterDelay={0.3}
+          placement="rightTop"
+          title={
+            <Space>
+              <Text>{text}</Text>
+              <Text type="secondary">{row.equip.category}</Text>
+            </Space>
+          }
+          content={<pre>{row.equip.description}</pre>}
+        >
+          {text}
+        </Popover>
+      );
+    },
   },
   {
     title: "State",
@@ -193,19 +215,17 @@ function Borrow() {
       render: (_, row) => (
         <Space size="small" wrap>
           {row.return_time ? null : (
-            <Button type="link" success onClick={() => showReturnConfirm(row)}>
-              Return
-            </Button>
+            <Link onClick={() => showReturnConfirm(row)}>Return</Link>
           )}
-          <Button
-            type="link"
+          <Link
+            type="success"
             onClick={() => navigate(`/borrow/edit/${row.id}`)}
           >
             Edit
-          </Button>
-          <Button type="link" danger onClick={() => showDeleteConfirm(row)}>
+          </Link>
+          <Link type="warning" onClick={() => showDeleteConfirm(row)}>
             Delete
-          </Button>
+          </Link>
         </Space>
       ),
     },
