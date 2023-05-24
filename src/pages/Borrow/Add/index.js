@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import { useStore } from "../../../store";
 
 import styles from "./index.module.css";
+import EquipCard from "../../../components/EquipCard";
 
 const { Content } = Layout;
 const { Text } = Typography;
@@ -24,7 +25,7 @@ function Add() {
   const [form] = Form.useForm();
   const [userList, setUserList] = useState([]);
   const [equipList, setEquipList] = useState([]);
-  const [equipStock, setEquipStock] = useState(0);
+  const [currEquip, setCurrEquip] = useState(null);
   const [dueTime, setDueTime] = useState(null);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ function Add() {
       .addBorrow(params)
       .then(() => {
         form.resetFields();
-        setEquipStock(0);
+        setCurrEquip(null);
         message.success("create successfully");
       })
       .catch((e) => {
@@ -87,11 +88,11 @@ function Add() {
                 showSearch
                 placeholder="Please select"
                 optionFilterProp="label"
-                onChange={(_, option) => setEquipStock(option.stock)}
+                onChange={(_, option) => setCurrEquip(option.equip)}
                 options={equipList.map((equip) => ({
                   label: equip.name,
                   value: equip.id,
-                  stock: equip.stock,
+                  equip: equip,
                 }))}
               />
             </Form.Item>
@@ -112,6 +113,7 @@ function Add() {
                 options={userList.map((user) => ({
                   label: user.username,
                   value: user.id,
+                  user: user,
                 }))}
               />
             </Form.Item>
@@ -142,7 +144,7 @@ function Add() {
                 },
               ]}
             >
-              {equipStock}
+              {currEquip?.stock}
             </Form.Item>
             <Form.Item noStyle>
               <Button
@@ -150,12 +152,15 @@ function Add() {
                 htmlType="submit"
                 className={styles.btn}
                 // stock <= 0, submit shouldn't be enabled.
-                disabled={equipStock <= 0}
+                disabled={currEquip?.stock <= 0}
               >
                 Submit
               </Button>
             </Form.Item>
           </Form>
+        </Col>
+        <Col span={11}>
+          <EquipCard equip={currEquip} />
         </Col>
       </Row>
     </Content>

@@ -7,7 +7,7 @@
 
 .form {
   overflow: auto;
-  padding: 32px;
+  margin: 32px;
   height: 100%;
 }
 
