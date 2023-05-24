@@ -13,8 +13,6 @@ import {
   message,
   Typography,
   Popover,
-  Descriptions,
-  Tooltip,
 } from "antd";
 import { SearchOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { useState, useEffect } from "react";
@@ -29,7 +27,6 @@ import styles from "./index.module.css";
 
 const { Content } = Layout;
 const { Option } = Select;
-const { Link, Text } = Typography;
 
 const COLUMNS = [
   {
@@ -45,8 +42,10 @@ const COLUMNS = [
           placement="rightTop"
           title={
             <Space>
-              <Text>{text}</Text>
-              <Text type="secondary">{row.equip.category}</Text>
+              <Typography.Text>{text}</Typography.Text>
+              <Typography.Text type="secondary">
+                {row.equip.category}
+              </Typography.Text>
             </Space>
           }
           content={<pre>{row.equip.description}</pre>}
@@ -215,17 +214,22 @@ function Borrow() {
       render: (_, row) => (
         <Space size="small" wrap>
           {row.return_time ? null : (
-            <Link onClick={() => showReturnConfirm(row)}>Return</Link>
+            <Typography.Link onClick={() => showReturnConfirm(row)}>
+              Return
+            </Typography.Link>
           )}
-          <Link
+          <Typography.Link
             type="success"
             onClick={() => navigate(`/borrow/edit/${row.id}`)}
           >
             Edit
-          </Link>
-          <Link type="warning" onClick={() => showDeleteConfirm(row)}>
+          </Typography.Link>
+          <Typography.Link
+            type="warning"
+            onClick={() => showDeleteConfirm(row)}
+          >
             Delete
-          </Link>
+          </Typography.Link>
         </Space>
       ),
     },

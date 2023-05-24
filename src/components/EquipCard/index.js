@@ -1,7 +1,6 @@
 import { Card } from "antd";
 
 export default function EquipCard({equip}) {
-  console.log(equip);
   if (equip) {
     return (
       <Card
