@@ -26,6 +26,14 @@ class BorrowStore {
   backEquip = async (id) => {
     return request.put(`/borrow/${id}/back/`);
   }
+
+  getReminderCount = async () => {
+    return await request.get("/borrow/reminder/count/");
+  };
+
+  getReminders = async () => {
+    return await request.get("/borrow/reminder/");
+  };
 }
 
 export default BorrowStore;
