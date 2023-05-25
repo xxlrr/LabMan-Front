@@ -132,7 +132,7 @@ const SearchForm = ({ onFinish, onClear }) => {
 
 function Equipment() {
   const navigate = useNavigate();
-  const { equipStore } = useStore();
+  const { equipStore, userStore } = useStore();
 
   const [params, setParams] = useState({});
   const [pagination, setPagination] = useState({"current": 1, "pageSize": 10});
@@ -162,7 +162,8 @@ function Equipment() {
     });
   };
 
-  const columns = [
+  const userInfo = userStore.userInfo;
+  const columns = userInfo.role === "Manager" ? [
     ...COLUMNS,
     {
       title: "Action",
@@ -176,10 +177,10 @@ function Equipment() {
           <Button type="link" danger onClick={() => showDeleteConfirm(row.id)}>
             Delete
           </Button>
-        </Space>
+        </Space>  
       ),
     },
-  ];
+  ] : COLUMNS;
 
   return (
     <Content className={styles.content}>

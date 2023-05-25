@@ -19,35 +19,36 @@ const { Header, Sider } = Layout;
 // the sider menu items
 const sider_items = [
   {
-    roles: ["Manager"],
+    label: "Equipment",
     key: "manage",
     icon: <LaptopOutlined />,
     children: [
       {
-        label: "equipment list",
+        label: "Equipment list",
         key: "/equipment",
       },
       {
-        label: "add equipment",
+        roles: ["Manager"],
+        label: "Add equipment",
         key: "/equipment/add",
       },
     ],
-    label: "Manage",
   },
   {
+    label: "Borrow",
     key: "borrow",
     icon: <SnippetsOutlined />,
     children: [
       {
-        label: "borrowing record",
+        label: "Borrow record",
         key: "/borrow",
       },
       {
-        label: "add borrowing",
+        roles: ["Manager"],
+        label: "Add borrow",
         key: "/borrow/add",
       },
     ],
-    label: "Borrow",
   },
   {
     key: "/about",
@@ -62,9 +63,10 @@ const filterItemByRole = (items, role) => {
   if (!role) return new_items;
 
   items.forEach((item) => {
-    if (item.roles && !item.roles.includes(role)) return;
-    if (item.children) item.children = filterItemByRole(item.children);
-    new_items.push(item);
+    const new_item = Object.assign({}, item);
+    if (new_item.roles && !new_item.roles.includes(role)) return;
+    if (new_item.children) new_item.children = filterItemByRole(new_item.children, role);
+    new_items.push(new_item);
   });
   return new_items;
 };
@@ -82,7 +84,7 @@ function PageLayout() {
     message.success("logout");
   };
 
-  // the user menu times
+  // the user menu itmes
   const user_items = [
     {
       key: "1",
@@ -136,7 +138,7 @@ function PageLayout() {
             onClick={(e) => {
               navigate(e.key);
             }}
-            items={sider_items}
+            items={filterItemByRole(sider_items, userInfo.role)}
             style={{ height: "100%", borderRight: 0 }}
           />
         </Sider>
@@ -148,4 +150,4 @@ function PageLayout() {
   );
 }
 
-export default observer(PageLayout);
+export default PageLayout;

@@ -155,7 +155,7 @@ const SearchForm = ({ onFinish, onClear }) => {
 
 function Borrow() {
   const navigate = useNavigate();
-  const { borrowStore } = useStore();
+  const { borrowStore, userStore } = useStore();
 
   const [params, setParams] = useState({});
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -205,7 +205,10 @@ function Borrow() {
     });
   };
 
-  const columns = [
+
+  // add the action column if the current is a manager.
+  const userInfo = userStore.userInfo;
+  const columns = userInfo.role === "Manager" ? [
     ...COLUMNS,
     {
       title: "Action",
@@ -233,7 +236,7 @@ function Borrow() {
         </Space>
       ),
     },
-  ];
+  ] : COLUMNS;
 
   return (
     <Content className={styles.content}>

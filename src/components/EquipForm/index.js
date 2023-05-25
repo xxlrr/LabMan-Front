@@ -144,10 +144,9 @@ const EquipForm = ({ onFinish, editData }) => {
         <Form.Item label="Description" name="description">
           <TextArea rows={5} />
         </Form.Item>
-        <Form.Item label="State" name="state" >
+        <Form.Item label="State" name="state" initialValue="available">
           <Select
             style={{ width: 150 }}
-            defaultValue="available"  // not work, just display
             options={[
               { value: "available", label: "Available" },
               { value: "unavailable", label: "Unavailable" },
