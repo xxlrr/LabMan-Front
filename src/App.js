@@ -5,6 +5,7 @@ import Layout from "./pages/Layout";
 import Equipment from "./pages/Equipment";
 import Borrow from "./pages/Borrow";
 import About from "./pages/About";
+import Notification from "./pages/Notification";
 
 // add feature that redirect to `/login` if the user is not logged in
 // const LayoutWithAuth = withAuth(Layout, [], <Navigate to="/login" />);
@@ -25,6 +26,7 @@ function App() {
             <Route path="add" element={<Equipment.Add />} />
             <Route path="edit/:id/" element={<Equipment.Edit />} />
           </Route>
+          <Route path="/notification" element={<Notification />} />
           <Route path="*" element={<About />} />
         </Route>
         <Route path="/login" element={<Login />} />
