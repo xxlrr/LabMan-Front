@@ -65,9 +65,9 @@ function Edit() {
     }
   };
 
-  const handleFinish = (params) => {
+  const handleFinish = (form) => {
     borrowStore
-      .modBorrow(params.id, params)
+      .modBorrow(params.id, form)
       .then(() => {
         message.success("update successfully");
         navigate("/borrow");
