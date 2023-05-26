@@ -52,6 +52,7 @@ function Add() {
     borrowStore
       .addBorrow(params)
       .then(() => {
+        currEquip.stock -= 1;
         form.resetFields();
         setCurrEquip(null);
         message.success("create successfully");
