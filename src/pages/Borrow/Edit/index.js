@@ -16,8 +16,10 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useStore } from "../../../store";
 
-import styles from "./index.module.css";
+import { withAuth } from "../../../components/Authorize";
 import EquipCard from "../../../components/EquipCard";
+
+import styles from "./index.module.css";
 
 const { Content } = Layout;
 const { Text } = Typography;
@@ -34,12 +36,15 @@ function Edit() {
   const [dueTime, setDueTime] = useState(null);
 
   useEffect(() => {
+    // fetch all equips and set equip list (very expensive operation)
     equipStore.getEquips().then((res) => {
       setEquipList(res.list);
     });
+    // fetch all users and set equip list (very expensive and dangerious operation)
     userStore.getUsers().then((res) => {
       setUserList(res.list);
     });
+    // fetch the current borrow record and set the form.
     borrowStore.getBorrow(params.id).then((res) => {
       let values = {
         ...res,
@@ -54,6 +59,7 @@ function Edit() {
     });
   }, []);
 
+  // calculate the due time by borrow_time and duration, and set the dueTime state.
   const updateDueTime = () => {
     let borrowTime = form.getFieldValue("borrow_time");
     let duration = form.getFieldValue("duration");
@@ -90,6 +96,7 @@ function Edit() {
             form={form}
             autoComplete="off"
           >
+            {/* equip list selector */}
             <Form.Item
               label="Equipment"
               name="equip_id"
@@ -112,6 +119,7 @@ function Edit() {
                 }))}
               />
             </Form.Item>
+            {/* user list selector */}
             <Form.Item
               label="Borrower"
               name="user_id"
@@ -133,6 +141,7 @@ function Edit() {
                 }))}
               />
             </Form.Item>
+            {/* borrow time date picker */}
             <Form.Item
               label="Borrow Time"
               name="borrow_time"
@@ -149,6 +158,7 @@ function Edit() {
                 showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
               />
             </Form.Item>
+            {/* duration input */}
             <Form.Item label="Duration">
               <Space>
                 <Form.Item
@@ -166,6 +176,7 @@ function Edit() {
                 <Text type="secondary">Due Time: {dueTime}</Text>
               </Space>
             </Form.Item>
+            {/* return time date picker */}
             <Form.Item label="Return Time" name="return_time">
               <DatePicker
                 format="YYYY-MM-DD HH:mm:ss"
@@ -190,6 +201,7 @@ function Edit() {
             </Form.Item>
           </Form>
         </Col>
+        {/* the equipment preview */}
         <Col span={11}>
           <EquipCard equip={currEquip} />
         </Col>
@@ -198,4 +210,4 @@ function Edit() {
   );
 }
 
-export default Edit;
+export default withAuth(Edit, ["Manager"]);

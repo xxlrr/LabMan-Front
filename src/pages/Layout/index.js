@@ -1,6 +1,5 @@
 import React from "react";
-import { useNavigate, Outlet } from "react-router-dom";
-import { observer } from "mobx-react-lite";
+import { useNavigate, Outlet, Navigate } from "react-router-dom";
 import { Layout, Menu, Dropdown, message, Avatar, Space } from "antd";
 import {
   LaptopOutlined,
@@ -10,6 +9,7 @@ import {
 } from "@ant-design/icons";
 
 import { useStore } from "../../store";
+import { withAuth } from "../../components/Authorize";
 import Notification from "../Notification";
 
 import styles from "./index.module.css";
@@ -17,7 +17,7 @@ import styles from "./index.module.css";
 const { Header, Sider } = Layout;
 
 // the sider menu items
-const sider_items = [
+const siderItems = [
   {
     label: "Equipment",
     key: "manage",
@@ -59,16 +59,16 @@ const sider_items = [
 
 // filter items by the given role
 const filterItemByRole = (items, role) => {
-  const new_items = [];
-  if (!role) return new_items;
+  const newItems = [];
+  if (!role) return newItems;
 
   items.forEach((item) => {
-    const new_item = Object.assign({}, item);
-    if (new_item.roles && !new_item.roles.includes(role)) return;
-    if (new_item.children) new_item.children = filterItemByRole(new_item.children, role);
-    new_items.push(new_item);
+    const newItem = Object.assign({}, item);
+    if (newItem.roles && !newItem.roles.includes(role)) return;
+    if (newItem.children) newItem.children = filterItemByRole(newItem.children, role);
+    newItems.push(newItem);
   });
-  return new_items;
+  return newItems;
 };
 
 function PageLayout() {
@@ -85,7 +85,7 @@ function PageLayout() {
   };
 
   // the user menu itmes
-  const user_items = [
+  const userItems = [
     {
       key: "1",
       label: (
@@ -115,7 +115,7 @@ function PageLayout() {
           <Space>
             <Notification.Bell />
             <Dropdown
-              menu={{ items: user_items }}
+              menu={{ items: userItems }}
               arrow={true}
               placement="bottomLeft"
             >
@@ -138,7 +138,7 @@ function PageLayout() {
             onClick={(e) => {
               navigate(e.key);
             }}
-            items={filterItemByRole(sider_items, userInfo.role)}
+            items={filterItemByRole(siderItems, userInfo.role)}
             style={{ height: "100%", borderRight: 0 }}
           />
         </Sider>
@@ -150,4 +150,5 @@ function PageLayout() {
   );
 }
 
-export default PageLayout;
+// add feature that redirect to `/login` if the user is not logged in
+export default withAuth(PageLayout, [], <Navigate to="/login" />);

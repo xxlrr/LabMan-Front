@@ -5,11 +5,6 @@ import UserStore from "./user.Store";
 import EquipStore from "./equip.Store";
 import BorrowStore from "./borrow.Store";
 
-// import { configure } from "mobx"
-// configure({
-//   enforceActions: "never",
-// })
-
 class RootStore {
   constructor() {
     this.loginStore = new LoginStore();

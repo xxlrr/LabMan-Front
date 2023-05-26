@@ -3,9 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { message } from "antd";
 
 import { useStore } from "../../../store";
+import { withAuth } from "../../../components/Authorize";
 import EquipmentForm from "../../../components/EquipForm";
 
-export default function Equipment() {
+function Equipment() {
   const params = useParams();
   const navigate = useNavigate();
   const { equipStore } = useStore();
@@ -18,8 +19,11 @@ export default function Equipment() {
   };
 
   useEffect(() => {
+    // get the current equip info and save it to data.
     equipStore.getEquip(params.id).then(setData);
   }, []);
 
   return <EquipmentForm editData={data} onFinish={handleFinish} />;
 }
+
+export default withAuth(Equipment, ["Manager"]);

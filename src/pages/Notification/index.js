@@ -6,16 +6,16 @@ import { Link } from "react-router-dom";
 import { useStore } from "../../store";
 import styles from "./index.module.css";
 
-
+// A 🔔 component. It fetches the number of messages once in a while.
 function Bell() {
   const { borrowStore } = useStore();
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    // Get the number of messages every ten seconds (too frequent, just for tests)
     const interval = setInterval(() => {
       borrowStore.getReminderCount().then((res) => setCount(res.count));
     }, 10 * 1000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -35,8 +35,9 @@ function Bell() {
   );
 }
 
+// Return a object used for Item component from a borrow object.
 const fitToItem = (borrow) => {
-  const item = {id: borrow.id, equipName: borrow.equip.name, equipPhoto:borrow.equip.photo, }
+  const item = {id: borrow.id, equipName: borrow.equip.name, equipPhoto:borrow.equip.photo}
 
   const equip = borrow.equip;
   const borrowTime = dayjs(borrow.borrow_time).toString();
@@ -63,6 +64,7 @@ const fitToItem = (borrow) => {
   return item;
 };
 
+// A borrow item component used for borrow list in Notification component.
 function Item({borrow}) {
   const item = fitToItem(borrow);
 
@@ -91,6 +93,7 @@ function Item({borrow}) {
   );
 }
 
+// A component used to display the notification received.
 function Notification() {
   const [reminders, setReminders] = useState([]);
   const { borrowStore } = useStore();

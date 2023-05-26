@@ -1,14 +1,8 @@
 // login module
-import { makeAutoObservable } from "mobx";
 import { request, getToken, setToken, removeToken } from "../utils";
 
 class LoginStore {
   token = getToken() || "";
-  constructor() {
-    // for mobx
-    makeAutoObservable(this);
-  }
-
   // login
   login = async (username, password) => {
     // call the login API

@@ -28,6 +28,7 @@ const uploadButton = (
   </div>
 );
 
+// convert a file (picture) to base64 code
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -37,7 +38,6 @@ const getBase64 = (file) =>
   });
 
 const EquipForm = ({ onFinish, editData }) => {
-  
   const [form] = Form.useForm();
   const [photo, setPhoto] = useState();
   const [preview, setPreview] = useState(false);

@@ -162,6 +162,7 @@ function Equipment() {
     });
   };
 
+  // if the current is a Manager, add some action to the columns.
   const userInfo = userStore.userInfo;
   const columns = userInfo.role === "Manager" ? [
     ...COLUMNS,

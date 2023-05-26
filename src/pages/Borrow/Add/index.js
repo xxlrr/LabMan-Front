@@ -16,6 +16,7 @@ import { useStore } from "../../../store";
 
 import styles from "./index.module.css";
 import EquipCard from "../../../components/EquipCard";
+import { withAuth } from "../../../components/Authorize";
 
 const { Content } = Layout;
 const { Text } = Typography;
@@ -29,15 +30,19 @@ function Add() {
   const [dueTime, setDueTime] = useState(null);
 
   useEffect(() => {
+    // fetch all equips and set equip list (very expensive operation)
     equipStore.getEquips().then((res) => {
       setEquipList(res.list);
     });
+    // fetch all users and set equip list (very expensive and dangerious operation)
     userStore.getUsers().then((res) => {
       setUserList(res.list);
     });
+    // update dueTime
     updateDueTime();
   }, []);
 
+  // calculate the due time by borrow_time and duration, and set the dueTime state.
   const updateDueTime = () => {
     let duration = form.getFieldValue("duration");
     if (duration) {
@@ -160,6 +165,7 @@ function Add() {
             </Form.Item>
           </Form>
         </Col>
+        {/* the equipment preview */}
         <Col span={11}>
           <EquipCard equip={currEquip} />
         </Col>
@@ -168,4 +174,4 @@ function Add() {
   );
 }
 
-export default Add;
+export default withAuth(Add, ["Manager"]);

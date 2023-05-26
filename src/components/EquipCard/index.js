@@ -1,5 +1,6 @@
 import { Card } from "antd";
 
+// a card to preview equipment
 export default function EquipCard({equip}) {
   if (equip) {
     return (

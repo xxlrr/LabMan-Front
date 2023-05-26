@@ -2,9 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 
 import { useStore } from "../../../store";
+import { withAuth } from "../../../components/Authorize";
 import EquipmentForm from "../../../components/EquipForm";
 
-export default function Equipment() {
+function Equipment() {
   const navigate = useNavigate();
   const { equipStore } = useStore();
   const handleFinish = (form) => {
@@ -16,3 +17,5 @@ export default function Equipment() {
 
   return <EquipmentForm onFinish={handleFinish} />;
 }
+
+export default withAuth(Equipment, ["Manager"]);
