@@ -40,8 +40,8 @@ const fitToItem = (borrow) => {
   const item = {id: borrow.id, equipName: borrow.equip.name, equipPhoto:borrow.equip.photo}
 
   const equip = borrow.equip;
-  const borrowTime = dayjs(borrow.borrow_time).toString();
-  const dueTime = dayjs(borrow.borrow_time).add(borrow.duration, "day").toString();
+  const borrowTime = dayjs(borrow.borrow_time).format("YYYY-MM-DD HH:mm:ss");
+  const dueTime = dayjs(borrow.borrow_time).add(borrow.duration, "day").format("YYYY-MM-DD HH:mm:ss");
 
   switch (borrow.state) {
     case "BORROWING":
