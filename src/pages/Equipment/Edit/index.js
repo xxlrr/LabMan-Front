@@ -14,8 +14,10 @@ function Equipment() {
   const handleFinish = (form) => {
     equipStore
       .modEquip(params.id, form)
-      .then(() => message.success("update successfully"))
-      .then(() => navigate("/equipment"));
+      .then(() => {
+        message.success("update successfully");
+        navigate("/equipment");
+      });
   };
 
   useEffect(() => {

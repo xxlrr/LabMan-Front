@@ -11,8 +11,10 @@ function Equipment() {
   const handleFinish = (form) => {
     equipStore
       .addEquip(form)
-      .then(() => message.success("create successfully"))
-      .then(() => navigate("/equipment"));
+      .then(() => {
+        message.success("create successfully");
+        navigate("/equipment");
+      });
   };
 
   return <EquipmentForm onFinish={handleFinish} />;
