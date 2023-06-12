@@ -115,7 +115,7 @@ const EquipForm = ({ onFinish, editData }) => {
             },
           ]}
         >
-          <InputNumber style={{ width: 150 }} />
+          <InputNumber min={0} style={{ width: 150 }} />
         </Form.Item>
         <Form.Item name="photo" label="Photo">
           <Upload

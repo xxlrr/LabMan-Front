@@ -31,7 +31,7 @@ function Add() {
 
   useEffect(() => {
     // fetch all equips and set equip list (very expensive operation)
-    equipStore.getEquips().then((res) => {
+    equipStore.getEquips({state: "available"}).then((res) => {
       setEquipList(res.list);
     });
     // fetch all users and set equip list (very expensive and dangerious operation)

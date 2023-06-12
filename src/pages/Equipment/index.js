@@ -150,6 +150,12 @@ function Equipment() {
   const showDeleteConfirm = (id) => {
     Modal.confirm({
       title: "Are you sure delete it?",
+      content: (
+        <div>
+          <p style={{color: "red"}}>Note: All borrowing records associated with this device will be deleted!</p>
+          <p>Maybe you can set it to unavailable through 'Edit'.</p>
+        </div>
+      ),
       icon: <ExclamationCircleFilled />,
       okText: "Yes",
       okType: "danger",
