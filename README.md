@@ -1,10 +1,6 @@
 # LabMan-Frontend
-
-LabMan-Frontend: the Front-end of Laboratory Equipment Management System
-
-## Available Scripts
-
-In the project directory, you can run:
+LabMan-Frontend: the Front-end of Laboratory Equipment Management System  
+This is a commercial research project. The purpose of public is to facilitate team communication. Others are not allowed to plagiarize or copy it for commercial use. Note that this project abides by the contract and the core algorithm is removed.
 
 ## Available Scripts
 
@@ -32,3 +28,9 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Other contributors
+@Kengtian Lu
+@Hongxing Hao
+@Canhui Jiang
+@Haiyang Wang
